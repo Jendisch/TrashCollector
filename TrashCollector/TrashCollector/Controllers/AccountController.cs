@@ -154,7 +154,21 @@ namespace TrashCollector.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,  PhoneNumber = model.PhoneNumber, Line1Address = model.Line1Address, Line2Address = model.Line2Address, City = model.City, State = model.State, ZipCode = model.ZipCode, FirstName = model.FirstName, LastName = model.LastName};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,  PhoneNumber = model.PhoneNumber, Line1Address = model.Line1Address, Line2Address = model.Line2Address, City = model.City, State = model.State, ZipCode = model.ZipCode, FirstName = model.FirstName, LastName = model.LastName, StartDate = model.StartDate };
+
+                var schedule = new Schedule
+                {
+                    ApplicationUser = user,
+                    DefaultPickupDay = user.StartDate.ToString(),
+                    Id = user.Id,
+                };
+                user.schedule = schedule;
+
+                var payment = new Payment
+                {
+                    ApplicationUser = user,
+                };
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

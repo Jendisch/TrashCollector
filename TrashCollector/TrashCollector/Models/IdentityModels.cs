@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TrashCollector.Models
 {
@@ -38,6 +39,11 @@ namespace TrashCollector.Models
         [Required]
         public string ZipCode { get; set; }
 
+        [Display(Name = "Start Date")]
+        [Required]
+        public string StartDate { get; set; }
+
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -45,6 +51,29 @@ namespace TrashCollector.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        [ForeignKey("Schedule")]
+        public int ScheduleId;
+        public virtual Schedule schedule { get; set; }
+
+        [Display(Name = "Address")]
+        public string CombineAddress
+        {
+            get
+            {
+                string displayLine1Address = string.IsNullOrWhiteSpace(this.Line1Address) ? "" : this.Line1Address;
+                string displayLine2Address = string.IsNullOrWhiteSpace(this.Line2Address) ? "" : this.Line2Address;
+                string displayCity = string.IsNullOrWhiteSpace(this.City) ? "" : this.City;
+                string displayState = string.IsNullOrWhiteSpace(this.State) ? "" : this.State;
+                string displayZipCode = string.IsNullOrWhiteSpace(this.ZipCode) ? "" : this.ZipCode;
+
+                return string.Format($"{displayLine1Address} {displayLine2Address} {displayCity} {displayState} {displayZipCode}");
+
+            }
+        }
+
+
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -58,5 +87,10 @@ namespace TrashCollector.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Schedule> Schedule { get; set; }
+        public DbSet<Payment> Payment { get; set; }
+
+
     }
 }

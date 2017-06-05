@@ -118,6 +118,10 @@ namespace TrashCollector.Models
         [Display(Name = "Zip Code")]
         public string ZipCode { get; set; }
 
+        [Display(Name = "Start Date")]
+        [Required]
+        public string StartDate { get; set; }
+
     }
 
     public class ResetPasswordViewModel

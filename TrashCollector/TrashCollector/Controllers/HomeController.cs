@@ -27,6 +27,13 @@ namespace TrashCollector.Controllers
             return View();
         }
 
-        
+        public ActionResult RouteMap()
+        {
+            ViewBag.Message = "Your Google Maps page";
+
+            return View();
+        }
+
+
     }
 }

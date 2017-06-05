@@ -1,0 +1,17 @@
+﻿@model TrashCollector.Models.Schedule
+@{
+    ViewBag.Title = "Trash Pickup Schedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1><bold>@ViewBag.Title.</bold></h1>
+
+<br />
+<br />
+
+
+<h3>
+    Your current scheduled trash pickup day is every @Html.DisplayFor(model => model.ApplicationUser.schedule.DefaultPickupDay)
+</h3>
+
+@Html.DisplayFor(model => model.ApplicationUser.schedule.DefaultPickupDay)
