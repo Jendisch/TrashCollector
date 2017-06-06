@@ -52,6 +52,7 @@ namespace TrashCollector.Models
             return userIdentity;
         }
 
+
         [ForeignKey("Schedule")]
         public int ScheduleId;
         public virtual Schedule schedule { get; set; }

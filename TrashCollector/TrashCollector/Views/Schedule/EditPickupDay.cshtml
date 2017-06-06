@@ -1,0 +1,49 @@
+﻿@model TrashCollector.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Choose a New Pickup Day";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h1><bold>ViewBag.Title.</bold></h1>*@
+
+<br />
+
+@using (Html.BeginForm("ChangePickupDay", "Schedule", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    <h3>Choose a new day and click submit</h3>
+    <hr />
+    @Html.HiddenFor(m => m.Id);
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.StartDate)
+        <select name="StartDate">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+        </select>
+        @Html.ValidationMessageFor(m => m.StartDate)
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Change Pickup Day" class="btn btn-default" />
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
+
+
+
+
+
+
+

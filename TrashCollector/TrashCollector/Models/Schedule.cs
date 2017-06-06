@@ -27,7 +27,22 @@ namespace TrashCollector.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime? VacationEndDate { get; set; }
-        
+
+
+        public class ChangePickupDayViewModel
+        {
+            [Required]
+            [Display(Name = "Choose New Pickup Day")]
+            public string DefaultPickupDay { get; set; }
+
+            public string Id { get; set; }
+        }
+
+        public class IndexViewModel
+        {
+            public string DefaultPickupDay { get; set; }
+        }
+
 
     }
 }
