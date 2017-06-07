@@ -39,7 +39,7 @@ namespace TrashCollector.Models
         [Required]
         public string ZipCode { get; set; }
 
-        [Display(Name = "Start Date")]
+        [Display(Name = "Set Weekly Pickup Day")]
         [Required]
         public string StartDate { get; set; }
 

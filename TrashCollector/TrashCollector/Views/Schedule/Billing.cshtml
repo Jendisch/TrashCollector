@@ -4,98 +4,113 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1><bold>@ViewBag.Title.</bold></h1>
 
-<br />
-<br />
+<!DOCTYPE html>
+<html>
+<head>
 
-
-<h3>
-    Current Bill: @string.Format("{0:C}", @Html.DisplayFor(m => m.CurrentBill))
-</h3>
-<br />
-<h2>
-    Would you like to pay your bill right now? 
-</h2>
-<br />
-@Html.ActionLink(" Pay Bill ", "PayBill", "Schedule", new { id = Model.Id }, new { @class = "btn btn-primary" })
-
-
-
-@*Tried to figure out how to have a pop up confirmation box or use a modal to view hidden confirmation but it didn't work*@
-
-
-
-@*<form id="form1" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server">
-    </asp:ScriptManager>
-    <asp:Button ID="btnShow" runat="server" Text="Show Modal Popup" />
-
-    <!-- ModalPopupExtender -->
-    <cc1:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="btnShow"
-                            CancelControlID="btnClose" BackgroundCssClass="modalBackground">
-    </cc1:ModalPopupExtender>
-    <asp:Panel ID="Panel1" runat="server" CssClass="modalPopup" align="center" style="display:none">
-        This is an ASP.Net AJAX ModalPopupExtender Example<br />
-        <asp:Button ID="btnClose" runat="server" Text="Close" />
-    </asp:Panel>
-    <!-- ModalPopupExtender -->
-</form>*@
-
-
-
-
-
-
-@*<button id="myModal", class = "btn btn-primary"> Pay Bill </button>
-<br />
-<br />
-<div id="myModal" class="modal">
-    <div class="modal-content">
-    <span class="close">&times;</span>
-        <div>@Html.ActionLink(" Pay Bill ", "PayBill", "Schedule", new { id = Model.Id }, new { @class = "btn btn-default" })</div>
-</div>
-</div>*@
-
-
-
-
-
-
-
-    @*@Ajax.ActionLink(
-            " Pay Bill ",
-            "Load",
-            "Schedule",
-            new AjaxOptions { UpdateTargetId = "result" },
-            new { @class = "btn btn-primary" }
-        )
-
-        <br />
-        <br />
-        <br />
-        <br />
-        <div id="result"></div>
-        @Html.Partial("_AdminPartialView")
-
-        <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>*@
-
-
-
-
-
-
-
-    @*@Html.ActionLink(" Pay Bill ", "PayBill", "Schedule", new { onclick = "return confirm()" }, new { @class = "btn btn-primary" })
-
-        <a href="javascript:confirmation();"> Pay Bill </a>
-
-        <script>
-        function confirmation() {
-         var answer = confirm("Are you sure you want your account charged?")
-         if(answer) {
-          // Do something here, post or get
-          window.location = @Url.Action("PayBill", "Schedule");
-         }
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
         }
-        </script>*@
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    </style>
+
+</head>
+<body>
+
+    <h1><bold>@ViewBag.Title.</bold></h1>
+
+    <br />
+    <br />
+
+    <h3>
+        Current Bill: @string.Format("{0:C}", Model.CurrentBill)
+    </h3>
+    <br />
+    <h2>
+        Would you like to pay your bill right now?
+    </h2>
+    <br />
+    @*@Html.ActionLink(" Pay Bill ", "PayBill", "Schedule", new { id = Model.Id }, new { @class = "btn btn-primary" })*@
+
+    <button id="myBtn" , class="btn btn-primary"> Pay Bill </button>
+    <br />
+    <br />
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <center>
+                <p>Click below to confirm payment.</p>
+                <div>@Html.ActionLink(" Pay Bill ", "PayBill", "Schedule", new { id = Model.Id }, new { @class = "btn btn-default" })</div>
+            </center>
+</div>
+    </div>
+
+
+<script>
+
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal 
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+</script>
+
+</body>
+</html>
+

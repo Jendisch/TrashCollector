@@ -89,25 +89,33 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.StartDate)
-        <select name="StartDate">
-            <option value ="Monday">Monday</option>
-            <option value ="Tuesday">Tuesday</option>
-            <option value ="Wednesday">Wednesday</option>
-            <option value ="Thursday">Thursday</option>
-            <option value ="Friday">Friday</option>
-        </select>
-        @Html.ValidationMessageFor(m => m.StartDate)
-    </div>
+        <div class="col-md-5">
+            <center>
+                @Html.LabelFor(m => m.StartDate): 
+                <select name="StartDate">
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                </select>
+                @Html.ValidationMessageFor(m => m.StartDate)
+            </center>
+        </div>
+        </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.PaymentType)
-        <select name="PaymentType">
-            <option value="Visa">Visa</option>
-            <option value="Mastercard">Mastercard</option>
-            <option value="Discover">Discover</option>
-        </select>
-        @Html.ValidationMessageFor(m => m.PaymentType)
-    </div>
+        <div class="col-md-5">
+            <center>
+                @Html.LabelFor(m => m.PaymentType):
+                <select name="PaymentType">
+                    <option value="Visa">Visa</option>
+                    <option value="Mastercard">Mastercard</option>
+                    <option value="Discover">Discover</option>
+                </select>
+                @Html.ValidationMessageFor(m => m.PaymentType)
+            </center>
+</div>
+        </div>
     <div class="form-group">
         @Html.LabelFor(m => m.CardNumber, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
@@ -115,7 +123,6 @@
             @Html.ValidationMessageFor(m => m.CardNumber)
         </div>
     </div>
-
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

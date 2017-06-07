@@ -67,11 +67,13 @@ namespace TrashCollector.Models
         [StringLength(255)]
         [Display(Name = "First Name")]
         [Required]
+        [RegularExpression("^[a-zA-Z''-'\\s]{1,40}$", ErrorMessage = "Please enter your name.")]
         public string FirstName { get; set; }
 
         [StringLength(255)]
         [Display(Name = "Last Name")]
         [Required]
+        [RegularExpression("^[a-zA-Z''-'\\s]{1,40}$", ErrorMessage = "Please enter your name.")]
         public string LastName { get; set; }
 
         [Required]
@@ -93,6 +95,7 @@ namespace TrashCollector.Models
         [Required]
         [StringLength(255)]
         [Display(Name = "Phone Number")]
+        [RegularExpression("^[01]?[- .]?(\\([2-9]\\d{2}\\)|[2-9]\\d{2})[- .]?\\d{3}[- .]?\\d{4}$", ErrorMessage = "Please enter a valid phone number.")]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -112,13 +115,16 @@ namespace TrashCollector.Models
         [Required]
         [StringLength(100)]
         [Display(Name = "State")]
+        [RegularExpression("^[a-zA-Z]{2}", ErrorMessage = "Please enter a valid two letter state abbreviation.")]
+             
         public string State { get; set; }
 
         [Required]
         [Display(Name = "Zip Code")]
+        [RegularExpression("^(\\d{5}-\\d{4}|\\d{5}|\\d{9})$|^([a-zA-Z]\\d[a-zA-Z] \\d[a-zA-Z]\\d)$", ErrorMessage = "Please enter a valid zip code.")]
         public string ZipCode { get; set; }
 
-        [Display(Name = "Start Date")]
+        [Display(Name = "Set Weekly Pickup Day")]
         [Required]
         public string StartDate { get; set; }
 
@@ -129,6 +135,7 @@ namespace TrashCollector.Models
 
         [Display(Name = "Card Number")]
         [Required]
+        [RegularExpression("^[0-9]{16}$", ErrorMessage = "Please enter a 16 digit card number.")]
         public double CardNumber { get; set; }
 
     }

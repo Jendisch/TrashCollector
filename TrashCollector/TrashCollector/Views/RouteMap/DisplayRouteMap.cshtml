@@ -73,7 +73,7 @@
             @Html.DisplayFor(modelItem => item.CombineAddress)
         </td>
         <td>
-            <bold><center>@Html.ActionLink("Picked Up Trash", "ChargeClient", "RouteMap", new { value = item.Id }, new { @class = "btn btn-default" })</center></bold>
+            <bold><center>@Html.ActionLink("Picked Up Trash", "ChargeClient", "RouteMap", new { id = item.Id }, new { @class = "btn btn-default" })</center></bold>
         </td>
     </tr>
 }

@@ -69,13 +69,13 @@ namespace TrashCollector.Controllers
             return View(currentZipRoutes.ToList());
         }
 
-        public ActionResult ChargeClient(string value)
+        public ActionResult ChargeClient(string id)
         {
-            if (value == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser currentUser = _context.Users.Find(value);
+            ApplicationUser currentUser = _context.Users.Find(id);
             if (currentUser == null)
             {
                 return HttpNotFound();
@@ -83,7 +83,20 @@ namespace TrashCollector.Controllers
             currentUser.CurrentBill += 5;
             _context.Entry(currentUser).State = EntityState.Modified;
             _context.SaveChanges();
-            return View("DisplayRouteMap");
+
+            string todaysDayName = DateTime.Now.DayOfWeek.ToString();
+            DateTime todaysDate = DateTime.Now;
+            var allClients = _context.Users.Where(a => a.StartDate != null);
+            var uniqueZipCodes = allClients.Select(m => m.ZipCode).Distinct();
+            ViewBag.ZipCodes = uniqueZipCodes;
+            var currentZipRoutes = allClients.
+                                    Where(m => (currentUser.ZipCode == m.ZipCode.ToString()
+                                    && m.schedule.DefaultPickupDay == todaysDayName
+                                    && ((m.schedule.VacationStartDate == null
+                                    && m.schedule.VacationEndDate == null) ||
+                                    (m.schedule.VacationStartDate < todaysDate
+                                    && m.schedule.VacationEndDate > todaysDate))));
+            return View("DisplayRouteMap", currentZipRoutes.ToList());
         }
 
 
