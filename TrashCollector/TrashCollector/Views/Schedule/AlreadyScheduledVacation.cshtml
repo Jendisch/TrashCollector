@@ -1,0 +1,31 @@
+﻿@model TrashCollector.Models.ApplicationUser
+@{
+    ViewBag.Title = "Trash Pickup Schedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1><bold>@ViewBag.Title.</bold></h1>
+
+<br />
+<br />
+
+
+<h3>
+    Scheduled Pickup Day: @Html.DisplayFor(m => m.StartDate)
+</h3>
+<br />
+@Html.ActionLink("Change Pickup Day", "ChangePickupDay", "Schedule", new { id = Model.Id }, new { @class = "btn btn-primary" })
+
+<br />
+<br />
+<br />
+<br />
+
+<h3>
+    Your last scheduled vacation time: @Html.DisplayFor(m => m.schedule.VacationStartDate) through @Html.DisplayFor(m => m.schedule.VacationEndDate)
+</h3>
+<h3>
+    Would you like to schedule a new vacation? Click below.
+</h3>
+<br />
+@Html.ActionLink("Schedule Vacation", "ScheduleVacation", "Schedule", new { id = Model.Id }, new { @class = "btn btn-primary" })

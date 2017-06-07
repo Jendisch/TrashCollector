@@ -1,0 +1,57 @@
+﻿@model TrashCollector.Models.Schedule
+
+@{
+    ViewBag.Title = "Schedule Your Vacation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <h1><bold>@ViewBag.Title.</bold></h1>
+
+    <br />
+    <br />
+
+    @using (Html.BeginForm("ScheduleVacation", "Schedule", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.VacationStartDate, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.VacationStartDate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.VacationStartDate)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.VacationEndDate, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.VacationEndDate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.VacationEndDate)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Submit" />
+            </div>
+        </div>
+    }
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+

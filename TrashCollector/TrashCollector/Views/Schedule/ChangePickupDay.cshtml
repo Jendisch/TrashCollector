@@ -1,18 +1,16 @@
 ﻿@model TrashCollector.Models.ApplicationUser
 
 @{
-    ViewBag.Title = "Choose a New Pickup Day";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<h1><bold>ViewBag.Title.</bold></h1>*@
+<h1><bold>Choose a New Pickup Day.</bold></h1>
 
 <br />
 
 @using (Html.BeginForm("ChangePickupDay", "Schedule", FormMethod.Post, new { @class = "form-horizontal" }))
 {
     @Html.AntiForgeryToken()
-    <h3>Choose a new day and click submit</h3>
     <hr />
     @Html.HiddenFor(m => m.Id);
     @Html.ValidationSummary("", new { @class = "text-danger" })
@@ -29,7 +27,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Change Pickup Day" class="btn btn-default" />
+            <input type="submit" value="Change Pickup Day" class="btn btn-primary" />
         </div>
     </div>
 }

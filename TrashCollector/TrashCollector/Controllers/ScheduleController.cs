@@ -15,101 +15,28 @@ namespace TrashCollector.Controllers
 {
     public class ScheduleController : Controller
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+
         private ApplicationDbContext _context;
-        ApplicationUser currentUser;
 
         public ScheduleController()
         {
             _context = new ApplicationDbContext();
         }
 
-        public ScheduleController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-            _context = new ApplicationDbContext();
-        }
-
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
-            }
-        }
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
-
-
         public ActionResult Index()
         {
-
             string userId = User.Identity.GetUserId();
-            currentUser = _context.Users.Find(userId);
-
-            return View(currentUser);
+            ApplicationUser currentUser = _context.Users.Find(userId);
+            if(currentUser.schedule.VacationStartDate == null || currentUser.schedule.VacationEndDate == null)
+            {
+                return View("Index", currentUser);
+            }
+            else
+            {
+                return View("AlreadyScheduledVacation", currentUser);
+            }
         }
 
-        //public ActionResult ChangePickupDay()
-        //{
-        //    return View("EditPickupDay");
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> ChangePickupDay(ChangePickupDayViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-        //    var result = await UserManager..ChangePickupDayAsync(model.DefaultPickupDay);
-        //    if (result.Succeeded)
-        //    {
-        //        var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-        //        if (user != null)
-        //        {
-        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-        //        }
-        //        return RedirectToAction("ConfirmEditWasSuccessful");
-        //    }
-        //    AddErrors(result);
-        //    return View("EditPickupDay", model);
-        //}
-
-        //private void AddErrors(IdentityResult result)
-        //{
-        //    foreach (var error in result.Errors)
-        //    {
-        //        ModelState.AddModelError("", error);
-        //    }
-        //}
-
-
-
-
-
-
-
-
-
-        // GET: ScheduleModels/Edit/5
         public ActionResult ChangePickupDay(string id)
         {
             if (id == null)
@@ -122,33 +49,90 @@ namespace TrashCollector.Controllers
                 return HttpNotFound();
             }
             ViewBag.Id = new SelectList(_context.Users, "StartDate", currentUser.Id);
-            return View("EditPickupDay", currentUser);
+            return View("ChangePickupDay", currentUser);
         }
-
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangePickupDay(string Id, string StartDate)
+        public ActionResult ChangePickupDay(string id, string StartDate)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = _context.Users.Find(Id);
-                user.schedule.DefaultPickupDay = StartDate;
-                user.StartDate = StartDate;
-                _context.Entry(user).State = EntityState.Modified;
+                ApplicationUser currentUser = _context.Users.Find(id);
+                currentUser.schedule.DefaultPickupDay = StartDate;
+                currentUser.StartDate = StartDate;
+                _context.Entry(currentUser).State = EntityState.Modified;
                 _context.SaveChanges();
                 return RedirectToAction("ConfirmEditWasSuccessful", "Schedule");
             }
-            ViewBag.Id = new SelectList(_context.Users, "StartDate", currentUser.Id);
-            return View("EditPickupDay");
+            ViewBag.Id = new SelectList(_context.Users, "StartDate", id);
+            return View("ChangePickupDay");
         }
-
-
-
 
         public ActionResult ConfirmEditWasSuccessful()
         {
             return View();
+        }
+
+        public ActionResult ScheduleVacation(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser currentUser = _context.Users.Find(id);
+            Schedule schedule = currentUser.schedule;
+            if (currentUser == null)
+            {
+                return HttpNotFound();
+            }
+            return View("ScheduleVacation", schedule);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ScheduleVacation(string id, Schedule Schedule)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser currentUser = _context.Users.Find(id);
+                currentUser.schedule.VacationStartDate = Schedule.VacationStartDate;
+                currentUser.schedule.VacationEndDate = Schedule.VacationEndDate;
+                _context.Entry(currentUser).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("ConfirmEditWasSuccessful", "Schedule");
+            }
+            ViewBag.Id = new SelectList(_context.Users, "StartDate", id);
+            return View("ScheduleVacation");
+        }
+
+        public ActionResult Billing()
+        {
+            string userId = User.Identity.GetUserId();
+            ApplicationUser currentUser = _context.Users.Find(userId);
+            return View("Billing", currentUser);
+        }
+
+        public PartialViewResult Load()
+        {
+            return PartialView("_LoadConfirm");
+        }
+
+        public ActionResult PayBill(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser currentUser = _context.Users.Find(id);
+            if (currentUser == null)
+            {
+                return HttpNotFound();
+            }
+            currentUser.CurrentBill = 0;
+            _context.Entry(currentUser).State = EntityState.Modified;
+            _context.SaveChanges();
+            return View("Billing", currentUser);
         }
 
 

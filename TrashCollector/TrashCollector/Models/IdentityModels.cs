@@ -43,6 +43,17 @@ namespace TrashCollector.Models
         [Required]
         public string StartDate { get; set; }
 
+        [Display(Name = "Payment Type")]
+        [Required]
+        public string PaymentType { get; set; }
+
+        [Display(Name = "Card Number")]
+        [Required]
+        public double CardNumber { get; set; }
+
+        [Display(Name = "Current Bill")]
+        public double CurrentBill { get; set; }
+
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -75,6 +86,7 @@ namespace TrashCollector.Models
 
 
 
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -90,7 +102,6 @@ namespace TrashCollector.Models
         }
 
         public DbSet<Schedule> Schedule { get; set; }
-        public DbSet<Payment> Payment { get; set; }
 
 
     }

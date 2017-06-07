@@ -122,6 +122,15 @@ namespace TrashCollector.Models
         [Required]
         public string StartDate { get; set; }
 
+        [Display(Name = "Payment Type")]
+        [Required]
+        [StringLength(100)]
+        public string PaymentType { get; set; }
+
+        [Display(Name = "Card Number")]
+        [Required]
+        public double CardNumber { get; set; }
+
     }
 
     public class ResetPasswordViewModel

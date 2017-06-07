@@ -18,30 +18,15 @@ namespace TrashCollector.Models
         [Display(Name = "Default Pickup Day")]
         public string DefaultPickupDay { get; set; }
 
-        [Display(Name = "Start Vacation")]
+        [Display(Name = "Start Vacation:")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? VacationStartDate { get; set; }
 
-        [Display(Name = "End Vacation")]
+        [Display(Name = "End Vacation:")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime? VacationEndDate { get; set; }
-
-
-        public class ChangePickupDayViewModel
-        {
-            [Required]
-            [Display(Name = "Choose New Pickup Day")]
-            public string DefaultPickupDay { get; set; }
-
-            public string Id { get; set; }
-        }
-
-        public class IndexViewModel
-        {
-            public string DefaultPickupDay { get; set; }
-        }
 
 
     }

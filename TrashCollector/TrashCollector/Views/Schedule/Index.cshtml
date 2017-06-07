@@ -11,8 +11,16 @@
 
 
 <h3>
-    Scheduled Pickup Day: @Html.DisplayFor(m=> m.StartDate)
+    Scheduled Pickup Day: @Html.DisplayFor(m => m.StartDate)
 </h3>
-@Html.ActionLink("Change Pickup Day", "ChangePickupDay", "Schedule", new { id = Model.Id }, new { @class = "btn btn-primary" })
+<br />
+@Html.ActionLink("Change Pickup Day?", "ChangePickupDay", "Schedule", new { id = Model.Id }, new { @class = "btn btn-primary" })
 
+<br />
+<br />
 
+<h3>
+    Going on Vacation? Click below to schedule your vacation with us and not have a garbage pickup during your absence.
+</h3>
+<br />
+@Html.ActionLink("Schedule a Vacation?", "ScheduleVacation", "Schedule", new { id = Model.Id }, new { @class = "btn btn-primary" })

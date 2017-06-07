@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<TrashCollector.Models.ApplicationUser>
 
-@*Inherits="System.Web.Mvc.ViewPage*@
 
 <!DOCTYPE html>
 <html>
@@ -25,50 +24,67 @@
     </style>
 </head>
 <body>
-<h2>Today's Pickups</h2>
-
+<div class="row">
+    <div class="col-md-6">
+        <br />
+        <bold><h1>Directions</h1></bold>
+        <bold><h3>Please Select Route Zip Code</h3></bold>
+    </div>
+    <div class="col-md-6">
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    @using (Html.BeginForm("DisplayRouteMap", "RouteMap", FormMethod.Post, new { id = "TheForm" }))
+    {
+        <div>
+            @Html.DropDownList("ZipCode", new SelectList(ViewBag.ZipCodes), " Select ZipCode ", new
+       {
+           onchange = "document.getElementById('TheForm').submit();"
+       })
+        </div>
+    }
+</div>
+<br />
+<br />
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstName)
+            Customer
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            Address
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Line1Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ZipCode)
+            <center>Click To Confirm Pickup</center>
         </th>
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Line1Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ZipCode)
-            </td>
-            @*<td>
-                    @Html.ActionLink("View on Map", "", "") |
-                </td>*@
-        </tr>
-    }
+@foreach (var item in Model)
+{
     <tr>
         <td>
-            @Html.ActionLink("Back", "Index", "Users") |
+            @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CombineAddress)
+        </td>
+        <td>
+            <bold><center>@Html.ActionLink("Picked Up Trash", "ChargeClient", "RouteMap", new { value = item.Id }, new { @class = "btn btn-default" })</center></bold>
         </td>
     </tr>
+}
+
 </table>
-<hr />
+<h3>Google Map of Routes</h3>
 <br />
 
 <div id="map"></div>
 <div id="directions-panel"></div>
+@using Newtonsoft.Json;
 
 <script>
         var geocoder;
@@ -76,16 +92,20 @@
         var directionsDisplay;
         var directionsService;
         var stepDisplay;
-        var pickups = @Html.Raw(Json.Encode(Model));
+        var pickups = @Html.Raw(JsonConvert.SerializeObject(Model, Formatting.Indented,
+                            new JsonSerializerSettings
+                            {
+                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                            }));
         var waypts = [];
         function initMap() {
             geocoder = new google.maps.Geocoder();
             directionsService = new google.maps.DirectionsService;
             directionsDisplay = new google.maps.DirectionsRenderer;
-            var latlng = new google.maps.LatLng(43.0389, -87.9065);
+            var latlng = new google.maps.LatLng(43.034, -87.911);
             var mapOptions = {
                 center: latlng,
-                zoom: 13,
+                zoom: 12,
             };
             map = new google.maps.Map(document.getElementById("map"), mapOptions);
             directionsDisplay.setMap(map);
@@ -95,7 +115,7 @@
 
         function codeAddress() {
             for(var i = 0; i < pickups.length; i++){
-                var address = pickups[i].StreetAddress + " " + pickups[i].City + " " + pickups[i].State + " " + pickups[i].ZipCode;
+                var address = pickups[i].CombineAddress;
                 waypts.push({
                     location: address,
                     stopover: true
@@ -109,7 +129,7 @@
                             animation: google.maps.Animation.DROP
                         });
                     } else {
-                        alert('Geocode was not successful.');
+                        alert('Geocode was not successful for the following reason: ' + status);
                     }
                 });
             }
@@ -119,7 +139,7 @@
             console.log(waypts);
             directionsService.route({
                 origin: "333 N Plankinton Ave Milwaukee WI 53202",
-                destination: "333 n plankinton ave Milwaukee, wi 53202",
+                destination: "333 N Plankinton Ave Milwaukee WI 53202",
                 waypoints: waypts,
                 optimizeWaypoints: true,
                 travelMode: 'DRIVING'
@@ -142,19 +162,9 @@
                 }
             });
         }
-
-
-        @*<div id="map"></div>
-        <script>
-            var map;
-            function initMap() {
-                map = new google.maps.Map(document.getElementById('map'), {
-                    center: { lat: 43.034, lng: -87.911 },
-                    zoom: 12
-                });
-            }*@
 </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB75pBB0awnpqlNbscw8mhSvoRJdnIIQEA&callback=initMap"
-                async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB75pBB0awnpqlNbscw8mhSvoRJdnIIQEA&callback=initMap"
+        async defer></script>
+
 </body>
 </html>

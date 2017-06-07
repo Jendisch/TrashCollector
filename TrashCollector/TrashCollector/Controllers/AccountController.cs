@@ -154,7 +154,7 @@ namespace TrashCollector.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,  PhoneNumber = model.PhoneNumber, Line1Address = model.Line1Address, Line2Address = model.Line2Address, City = model.City, State = model.State, ZipCode = model.ZipCode, FirstName = model.FirstName, LastName = model.LastName, StartDate = model.StartDate };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,  PhoneNumber = model.PhoneNumber, Line1Address = model.Line1Address, Line2Address = model.Line2Address, City = model.City, State = model.State, ZipCode = model.ZipCode, FirstName = model.FirstName, LastName = model.LastName, StartDate = model.StartDate, PaymentType = model.PaymentType, CardNumber = model.CardNumber };
 
                 var schedule = new Schedule
                 {
@@ -164,15 +164,16 @@ namespace TrashCollector.Controllers
                 };
                 user.schedule = schedule;
 
-                var payment = new Payment
-                {
-                    ApplicationUser = user,
-                };
-
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
 
+
+                    ////Temp Code
+                    //var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+                    //var roleManager = new RoleManager<IdentityRole>(roleStore);
+                    //await roleManager.CreateAsync(new IdentityRole("Employee"));
+                    //await UserManager.AddToRoleAsync(user.Id, "Employee");
 
                     //Temp Code
                     var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
@@ -235,13 +236,6 @@ namespace TrashCollector.Controllers
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
-
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
